@@ -104,7 +104,7 @@ else
     ICON_CTX="◧"
     ICON_DIR="📂"
     ICON_GIT="⎇"
-    ICON_COST="$"
+    ICON_COST=""
     ICON_WARN="⚠"
     ICON_VIM="VIM"
     ICON_NODE="⬢"
