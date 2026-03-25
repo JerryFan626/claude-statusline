@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Claude Code Status Line — Two-line layout with Nerd Font icons
+# Claude Code Status Line — Two-line layout with dual icon modes (ascii/nerd)
 # Line 1: Model │ Context Bar │ Cost │ 5h usage │ 7d usage
 # Line 2: Directory │ Git Branch & Status │ Node.js │ Lines Changed │ Duration │ Agent │ Worktree │ Vim
 #
@@ -82,19 +82,37 @@ else
     WHITE_BOLD=$'\033[1;37m'
 fi
 
-# --- Nerd Font Icons (MD range, U+F0000+) ---
-ICON_MODEL="󰚩"     # nf-md-robot
-ICON_CTX="󰍛"       # nf-md-memory
-ICON_DIR="󰝰"       # nf-md-folder_outline
-ICON_GIT="󰘬"       # nf-md-source_branch
-ICON_COST="󰄉"      # nf-md-cash
-ICON_WARN=""       # nf-fa-warning
-ICON_VIM="󰕷"       # nf-md-vim
-ICON_NODE="󰎙"      # nf-md-nodejs
-ICON_CLOCK="󰥔"     # nf-md-clock_outline
-ICON_CODE="󰅩"      # nf-md-code_tags
-ICON_AGENT="󰳗"     # nf-md-robot_outline
-ICON_TREE="󰐅"      # nf-md-source_fork
+# --- Icons: ascii (default) or nerd (requires Nerd Font) ---
+# Override with STATUSLINE_ICONS=nerd
+ICON_MODE="${STATUSLINE_ICONS:-ascii}"
+
+if [ "$ICON_MODE" = "nerd" ]; then
+    ICON_MODEL="󰚩"     # nf-md-robot
+    ICON_CTX="󰍛"       # nf-md-memory
+    ICON_DIR="󰝰"       # nf-md-folder_outline
+    ICON_GIT="󰘬"       # nf-md-source_branch
+    ICON_COST="󰄉"      # nf-md-cash
+    ICON_WARN=""       # nf-fa-warning
+    ICON_VIM="󰕷"       # nf-md-vim
+    ICON_NODE="󰎙"      # nf-md-nodejs
+    ICON_CLOCK="󰥔"     # nf-md-clock_outline
+    ICON_CODE="󰅩"      # nf-md-code_tags
+    ICON_AGENT="󰳗"     # nf-md-robot_outline
+    ICON_TREE="󰐅"      # nf-md-source_fork
+else
+    ICON_MODEL="⚡"
+    ICON_CTX="◧"
+    ICON_DIR="📂"
+    ICON_GIT="⎇"
+    ICON_COST="$"
+    ICON_WARN="⚠"
+    ICON_VIM="VIM"
+    ICON_NODE="⬢"
+    ICON_CLOCK="⏱"
+    ICON_CODE="<>"
+    ICON_AGENT="🤖"
+    ICON_TREE="🌳"
+fi
 
 SEP="${DIM} │ ${RST}"
 BAR_SEGMENTS=16

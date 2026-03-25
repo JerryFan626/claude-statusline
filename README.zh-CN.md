@@ -1,6 +1,6 @@
 # Claude Code Status Line
 
-为 [Claude Code](https://claude.ai/claude-code) 打造的双行状态栏，使用 Nerd Font 图标。
+为 [Claude Code](https://claude.ai/claude-code) 打造的双行状态栏，支持 ASCII / Nerd Font 双图标模式。
 
 [English](README.md)
 
@@ -8,7 +8,7 @@
 
 **第一行 — AI 状态与用量：**
 ```
-󰚩 Opus │ 󰍛 ▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱ 28% │ 󰄉 $0.42 │ 5h 45% ↺ 4h27m │ 7d 12% ↺ 5d2h
+⚡ Opus │ ◧ ▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱ 28% │ $ $0.42 │ 5h 45% ↺ 4h27m │ 7d 12% ↺ 5d2h
 ```
 - 模型名称
 - Context 使用率（16 段进度条，颜色随阈值变化）
@@ -18,7 +18,7 @@
 
 **第二行 — 工作区信息：**
 ```
-󰝰 my-project │ 󰘬 main +2 ~1 ?3 │ 󰎙 v22 │ 󰅩 +156/-23 │ 󰥔 12m │ 󰕷 NORMAL
+📂 my-project │ ⎇ main +2 ~1 ?3 │ ⬢ v22 │ <> +156/-23 │ ⏱ 12m │ VIM NORMAL
 ```
 - 当前目录
 - Git 分支及文件变更数：staged (+)、unstaged (~)、untracked (?)
@@ -76,6 +76,18 @@ curl -fsSL https://raw.githubusercontent.com/JerryFan626/claude-statusline/main/
 
 ## 自定义
 
+### 图标模式
+
+支持两套图标，通过 `STATUSLINE_ICONS` 环境变量切换：
+
+```bash
+# ASCII 模式（默认，无需特殊字体）
+export STATUSLINE_ICONS=ascii
+
+# Nerd Font 模式（需要安装 Nerd Font）
+export STATUSLINE_ICONS=nerd
+```
+
 ### 主题
 
 自动从 macOS 系统设置检测深色/浅色模式。手动覆盖：
@@ -98,7 +110,7 @@ export STATUSLINE_THEME=dark   # 或 light、auto
 - bash（兼容 macOS 默认 bash 3.2）
 - [jq](https://jqlang.github.io/jq/)
 - git
-- [Nerd Font](https://www.nerdfonts.com/) 字体
+- （可选）[Nerd Font](https://www.nerdfonts.com/) 字体 — 仅 `STATUSLINE_ICONS=nerd` 模式需要
 
 ## 设计理念
 

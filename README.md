@@ -1,6 +1,6 @@
 # Claude Code Status Line
 
-A two-line status line for [Claude Code](https://claude.ai/claude-code) with Nerd Font icons.
+A two-line status line for [Claude Code](https://claude.ai/claude-code) with dual icon modes (ASCII / Nerd Font).
 
 [中文文档](README.zh-CN.md)
 
@@ -8,7 +8,7 @@ A two-line status line for [Claude Code](https://claude.ai/claude-code) with Ner
 
 **Line 1 — AI Status & Usage:**
 ```
-󰚩 Opus │ 󰍛 ▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱ 28% │ 󰄉 $0.42 │ 5h 45% ↺ 4h27m │ 7d 12% ↺ 5d2h
+⚡ Opus │ ◧ ▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱ 28% │ $ $0.42 │ 5h 45% ↺ 4h27m │ 7d 12% ↺ 5d2h
 ```
 - Model name
 - Context window usage (16-segment progress bar with color coding)
@@ -18,7 +18,7 @@ A two-line status line for [Claude Code](https://claude.ai/claude-code) with Ner
 
 **Line 2 — Workspace:**
 ```
-󰝰 my-project │ 󰘬 main +2 ~1 ?3 │ 󰎙 v22 │ 󰅩 +156/-23 │ 󰥔 12m │ 󰕷 NORMAL
+📂 my-project │ ⎇ main +2 ~1 ?3 │ ⬢ v22 │ <> +156/-23 │ ⏱ 12m │ VIM NORMAL
 ```
 - Current directory
 - Git branch with staged (+), unstaged (~), untracked (?) counts
@@ -76,6 +76,18 @@ Or manually remove `~/.claude/statusline-command.sh` and the `statusLine` key fr
 
 ## Customization
 
+### Icons
+
+Two icon modes available, controlled by `STATUSLINE_ICONS` environment variable:
+
+```bash
+# ASCII mode (default, works in any terminal)
+export STATUSLINE_ICONS=ascii
+
+# Nerd Font mode (requires a Nerd Font installed)
+export STATUSLINE_ICONS=nerd
+```
+
 ### Theme
 
 Auto-detects dark/light mode from macOS system settings. Override with:
@@ -98,7 +110,7 @@ Clone the repo and edit `statusline-command.sh` directly. Key constants at the t
 - bash (compatible with macOS default bash 3.2)
 - [jq](https://jqlang.github.io/jq/)
 - git
-- A [Nerd Font](https://www.nerdfonts.com/) for icon rendering
+- (Optional) A [Nerd Font](https://www.nerdfonts.com/) — only needed for `STATUSLINE_ICONS=nerd` mode
 
 ## Design
 
