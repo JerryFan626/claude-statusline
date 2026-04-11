@@ -88,6 +88,31 @@ export STATUSLINE_ICONS=ascii
 export STATUSLINE_ICONS=nerd
 ```
 
+#### Per-icon overrides
+
+Any individual icon can be replaced via `STATUSLINE_ICON_<NAME>` env vars, independent of the mode. For example, to keep the default ASCII set but swap just the git branch icon for a Nerd Font one:
+
+```bash
+export STATUSLINE_ICON_GIT=󰘬
+```
+
+Supported overrides:
+
+| Env var | Default (ascii) | Default (nerd) |
+|---|---|---|
+| `STATUSLINE_ICON_MODEL` | `⚡` | `󰚩` |
+| `STATUSLINE_ICON_CTX` | `◧` | `󰍛` |
+| `STATUSLINE_ICON_DIR` | `📂` | `󰝰` |
+| `STATUSLINE_ICON_GIT` | `⎇` | `󰘬` |
+| `STATUSLINE_ICON_COST` | (empty) | `󰄉` |
+| `STATUSLINE_ICON_WARN` | `⚠` | `` |
+| `STATUSLINE_ICON_VIM` | `VIM` | `󰕷` |
+| `STATUSLINE_ICON_NODE` | `⬢` | `󰎙` |
+| `STATUSLINE_ICON_CLOCK` | `⏱` | `󰥔` |
+| `STATUSLINE_ICON_CODE` | `<>` | `󰅩` |
+| `STATUSLINE_ICON_AGENT` | `🤖` | `󰳗` |
+| `STATUSLINE_ICON_TREE` | `🌳` | `󰐅` |
+
 ### Theme
 
 Auto-detects dark/light mode from macOS system settings. Override with:
