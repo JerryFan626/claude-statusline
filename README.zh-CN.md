@@ -88,6 +88,31 @@ export STATUSLINE_ICONS=ascii
 export STATUSLINE_ICONS=nerd
 ```
 
+#### 单个图标覆盖
+
+每个图标都可以通过 `STATUSLINE_ICON_<NAME>` 环境变量单独覆盖，与 `STATUSLINE_ICONS` 模式无关。例如：保留默认 ASCII 套装，只把 git 分支图标换成 Nerd Font 的版本：
+
+```bash
+export STATUSLINE_ICON_GIT=󰘬
+```
+
+支持的覆盖变量：
+
+| 环境变量 | 默认值（ascii） | 默认值（nerd） |
+|---|---|---|
+| `STATUSLINE_ICON_MODEL` | `⚡` | `󰚩` |
+| `STATUSLINE_ICON_CTX` | `◧` | `󰍛` |
+| `STATUSLINE_ICON_DIR` | `📂` | `󰝰` |
+| `STATUSLINE_ICON_GIT` | `⎇` | `󰘬` |
+| `STATUSLINE_ICON_COST` | （空） | `󰄉` |
+| `STATUSLINE_ICON_WARN` | `⚠` | `` |
+| `STATUSLINE_ICON_VIM` | `VIM` | `󰕷` |
+| `STATUSLINE_ICON_NODE` | `⬢` | `󰎙` |
+| `STATUSLINE_ICON_CLOCK` | `⏱` | `󰥔` |
+| `STATUSLINE_ICON_CODE` | `<>` | `󰅩` |
+| `STATUSLINE_ICON_AGENT` | `🤖` | `󰳗` |
+| `STATUSLINE_ICON_TREE` | `🌳` | `󰐅` |
+
 ### 主题
 
 自动从 macOS 系统设置检测深色/浅色模式。手动覆盖：
