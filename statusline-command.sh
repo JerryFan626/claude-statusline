@@ -179,7 +179,13 @@ fi
 git_info=""
 if git -C "$cwd" rev-parse --git-dir > /dev/null 2>&1; then
     branch=$(git -C "$cwd" branch --show-current 2>/dev/null)
-    [ -z "$branch" ] && branch="detached"
+    if [ -z "$branch" ]; then
+        # Detached HEAD — show short commit hash so users have an actual
+        # ref they can check out / merge, instead of the literal string
+        # "detached" which is not a valid ref.
+        branch=$(git -C "$cwd" rev-parse --short HEAD 2>/dev/null)
+        [ -z "$branch" ] && branch="detached"
+    fi
 
     staged=0 unstaged=0 untracked=0
     while IFS= read -r line; do
