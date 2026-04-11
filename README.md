@@ -96,6 +96,17 @@ Auto-detects dark/light mode from macOS system settings. Override with:
 export STATUSLINE_THEME=dark   # or light, auto
 ```
 
+### Line order
+
+By default the AI-status line is printed on top and the workspace line below. You can swap the two lines:
+
+```bash
+export STATUSLINE_LINE_ORDER=default          # (default) AI status on top
+export STATUSLINE_LINE_ORDER=workspace-first  # workspace info on top
+```
+
+This is mainly useful when Claude Code's permission-mode indicator (e.g. `⏵⏵ bypass permissions on`) visually overlaps the bottom statusline row. Switching to `workspace-first` moves directory / git / worktree info to the top row so it stays visible.
+
 ### Modifying the script
 
 Clone the repo and edit `statusline-command.sh` directly. Key constants at the top:

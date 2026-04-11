@@ -96,6 +96,17 @@ export STATUSLINE_ICONS=nerd
 export STATUSLINE_THEME=dark   # 或 light、auto
 ```
 
+### 两行顺序
+
+默认 AI 状态行在上，工作区信息行在下。可以调换顺序：
+
+```bash
+export STATUSLINE_LINE_ORDER=default          # （默认）AI 状态在上
+export STATUSLINE_LINE_ORDER=workspace-first  # 工作区信息在上
+```
+
+主要用途：当 Claude Code 开启 bypass permissions 等模式时，底部会多出一行模式指示条（如 `⏵⏵ bypass permissions on`），会视觉上覆盖 statusline 的第二行。切到 `workspace-first` 可以把目录 / git / worktree 这些更重要的信息挪到第一行，避免被盖住。
+
 ### 修改脚本
 
 克隆仓库后直接编辑 `statusline-command.sh`，关键常量：
