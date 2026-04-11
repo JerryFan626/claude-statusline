@@ -106,6 +106,17 @@ export STATUSLINE_SHOW_WORKTREE_PATH=1
 
 路径通过 `git rev-parse --show-toplevel` 获取，`$HOME` 会被缩写成 `~`。默认关闭。
 
+### 工作区段顺序
+
+第二行开头的三个工作区段（`dir`、`branch`、`worktree`）可以用逗号分隔的列表调整顺序：
+
+```bash
+export STATUSLINE_WORKSPACE_ORDER=dir,branch,worktree   # （默认）
+export STATUSLINE_WORKSPACE_ORDER=worktree,branch,dir   # worktree 在最前
+```
+
+可用 token：`dir`、`branch`、`worktree`。没出现在列表里的段会被省略；列表里出现的未知 token 会被忽略；没有值的段（比如非 git 仓库时的 `branch`、未开启 `STATUSLINE_SHOW_WORKTREE_PATH` 时的 `worktree`）会静默跳过。默认值保持原有行为不变。
+
 ### 修改脚本
 
 克隆仓库后直接编辑 `statusline-command.sh`，关键常量：

@@ -274,6 +274,25 @@ else
     line1="${CYAN}${BOLD}${ICON_MODEL} ${model}${RST}${SEP}${DIM}${ICON_CTX}${RST} ${CTX_COLOR}${bar} ${pct_int}%${RST}${line1_tail}"
 fi
 
-line2="${BLUE}${ICON_DIR} ${dir_name}${RST}${git_info}${worktree_path_str}${node_str}${changes_str}${duration_str}${agent_str}${worktree_str}${vim_str}"
+# --- Workspace segment order ---
+# Controls the order of the three workspace segments (dir, branch, worktree)
+# at the start of line 2. Default matches historical behavior.
+# Example: STATUSLINE_WORKSPACE_ORDER=worktree,branch,dir
+dir_str="${SEP}${BLUE}${ICON_DIR} ${dir_name}${RST}"
+workspace_order="${STATUSLINE_WORKSPACE_ORDER:-dir,branch,worktree}"
+workspace=""
+old_ifs=$IFS
+IFS=','
+for seg in $workspace_order; do
+    case "$seg" in
+        dir)      workspace="${workspace}${dir_str}" ;;
+        branch)   workspace="${workspace}${git_info}" ;;
+        worktree) workspace="${workspace}${worktree_path_str}" ;;
+    esac
+done
+IFS=$old_ifs
+workspace="${workspace#$SEP}"
+
+line2="${workspace}${node_str}${changes_str}${duration_str}${agent_str}${worktree_str}${vim_str}"
 
 printf '%s\n%s' "$line1" "$line2"

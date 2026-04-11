@@ -106,6 +106,17 @@ export STATUSLINE_SHOW_WORKTREE_PATH=1
 
 The path is resolved via `git rev-parse --show-toplevel` and `$HOME` is shortened to `~`. Disabled by default.
 
+### Workspace segment order
+
+The three workspace segments at the start of line 2 (`dir`, `branch`, `worktree`) can be reordered via a comma-separated list:
+
+```bash
+export STATUSLINE_WORKSPACE_ORDER=dir,branch,worktree   # (default)
+export STATUSLINE_WORKSPACE_ORDER=worktree,branch,dir   # worktree first
+```
+
+Valid tokens: `dir`, `branch`, `worktree`. Segments not in the list are omitted. Unknown tokens are ignored. Any segment that has no value (e.g. `worktree` when not in a git repo or when `STATUSLINE_SHOW_WORKTREE_PATH` is unset) is skipped silently. The default preserves historical behavior.
+
 ### Modifying the script
 
 Clone the repo and edit `statusline-command.sh` directly. Key constants at the top:
