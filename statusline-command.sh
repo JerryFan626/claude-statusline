@@ -177,6 +177,7 @@ fi
 
 # --- Git info (single git status --porcelain call) ---
 git_info=""
+worktree_path_str=""
 if git -C "$cwd" rev-parse --git-dir > /dev/null 2>&1; then
     branch=$(git -C "$cwd" branch --show-current 2>/dev/null)
     [ -z "$branch" ] && branch="detached"
@@ -199,6 +200,16 @@ if git -C "$cwd" rev-parse --git-dir > /dev/null 2>&1; then
     [ "$untracked" -gt 0 ] && status="${status} ${DIM}?${untracked}${RST}"
 
     git_info="${SEP}${MAGENTA}${ICON_GIT} ${branch}${RST}${status}"
+
+    # Opt-in: show git worktree root path
+    # Enable with STATUSLINE_SHOW_WORKTREE_PATH=1
+    if [ "${STATUSLINE_SHOW_WORKTREE_PATH:-0}" = "1" ]; then
+        worktree_root=$(git -C "$cwd" rev-parse --show-toplevel 2>/dev/null)
+        if [ -n "$worktree_root" ]; then
+            worktree_root_display="${worktree_root/#$HOME/~}"
+            worktree_path_str="${SEP}${CYAN}${ICON_TREE} ${worktree_root_display}${RST}"
+        fi
+    fi
 fi
 
 # --- Node.js version detection ---
@@ -263,6 +274,6 @@ else
     line1="${CYAN}${BOLD}${ICON_MODEL} ${model}${RST}${SEP}${DIM}${ICON_CTX}${RST} ${CTX_COLOR}${bar} ${pct_int}%${RST}${line1_tail}"
 fi
 
-line2="${BLUE}${ICON_DIR} ${dir_name}${RST}${git_info}${node_str}${changes_str}${duration_str}${agent_str}${worktree_str}${vim_str}"
+line2="${BLUE}${ICON_DIR} ${dir_name}${RST}${git_info}${worktree_path_str}${node_str}${changes_str}${duration_str}${agent_str}${worktree_str}${vim_str}"
 
 printf '%s\n%s' "$line1" "$line2"

@@ -96,6 +96,16 @@ export STATUSLINE_ICONS=nerd
 export STATUSLINE_THEME=dark   # 或 light、auto
 ```
 
+### Git worktree 根路径（可选开启）
+
+开启后会在 git 分支段之后追加一段，显示当前 git worktree 的根路径。在 monorepo 或者子目录下工作时很有用——`📂` 段只显示当前目录的最后一层，而这个路径能让你看到自己所在的仓库根。
+
+```bash
+export STATUSLINE_SHOW_WORKTREE_PATH=1
+```
+
+路径通过 `git rev-parse --show-toplevel` 获取，`$HOME` 会被缩写成 `~`。默认关闭。
+
 ### 修改脚本
 
 克隆仓库后直接编辑 `statusline-command.sh`，关键常量：

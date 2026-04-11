@@ -96,6 +96,16 @@ Auto-detects dark/light mode from macOS system settings. Override with:
 export STATUSLINE_THEME=dark   # or light, auto
 ```
 
+### Git worktree root path (opt-in)
+
+When enabled, a segment showing the current git worktree's root path is appended after the git branch info. Useful in monorepos or when working in subdirectories, since the `📂` segment only shows the last path component.
+
+```bash
+export STATUSLINE_SHOW_WORKTREE_PATH=1
+```
+
+The path is resolved via `git rev-parse --show-toplevel` and `$HOME` is shortened to `~`. Disabled by default.
+
 ### Modifying the script
 
 Clone the repo and edit `statusline-command.sh` directly. Key constants at the top:
