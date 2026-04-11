@@ -265,4 +265,13 @@ fi
 
 line2="${BLUE}${ICON_DIR} ${dir_name}${RST}${git_info}${node_str}${changes_str}${duration_str}${agent_str}${worktree_str}${vim_str}"
 
-printf '%s\n%s' "$line1" "$line2"
+# --- Line order ---
+# Override with STATUSLINE_LINE_ORDER=workspace-first to print the workspace
+# line above the AI-status line. Useful when Claude Code's permission-mode
+# indicator ("bypass permissions on ...") overlaps the bottom statusline row,
+# so you can keep the more important workspace info visible on top.
+if [ "${STATUSLINE_LINE_ORDER:-default}" = "workspace-first" ]; then
+    printf '%s\n%s' "$line2" "$line1"
+else
+    printf '%s\n%s' "$line1" "$line2"
+fi
