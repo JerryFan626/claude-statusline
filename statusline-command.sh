@@ -217,13 +217,16 @@ if git -C "$cwd" rev-parse --git-dir > /dev/null 2>&1; then
     git_info="${SEP}${MAGENTA}${ICON_GIT} ${branch}${RST}${status}"
 fi
 
-# --- Git worktree root path (opt-in: STATUSLINE_SHOW_WORKTREE_PATH=1) ---
+# --- Git worktree root path (auto: only shown when inside a linked worktree) ---
 worktree_path_str=""
-if [ "${STATUSLINE_SHOW_WORKTREE_PATH:-0}" = "1" ] && git -C "$cwd" rev-parse --git-dir > /dev/null 2>&1; then
-    wt_root=$(git -C "$cwd" rev-parse --show-toplevel 2>/dev/null)
-    if [ -n "$wt_root" ]; then
-        wt_display="${wt_root/#$HOME/~}"
-        worktree_path_str="${SEP}${DIM}${ICON_TREE} ${wt_display}${RST}"
+if git -C "$cwd" rev-parse --git-dir > /dev/null 2>&1; then
+    git_dir=$(git -C "$cwd" rev-parse --git-dir 2>/dev/null)
+    if [[ "$git_dir" == */.git/worktrees/* ]]; then
+        wt_root=$(git -C "$cwd" rev-parse --show-toplevel 2>/dev/null)
+        if [ -n "$wt_root" ]; then
+            wt_display="${wt_root/#$HOME/~}"
+            worktree_path_str="${SEP}${DIM}${ICON_TREE} ${wt_display}${RST}"
+        fi
     fi
 fi
 
@@ -289,22 +292,6 @@ else
     line1="${CYAN}${BOLD}${ICON_MODEL} ${model}${RST}${SEP}${DIM}${ICON_CTX}${RST} ${CTX_COLOR}${bar} ${pct_int}%${RST}${line1_tail}"
 fi
 
-# --- Workspace segment order (opt-in: STATUSLINE_WORKSPACE_ORDER=dir,branch,worktree_path) ---
-ws_order="${STATUSLINE_WORKSPACE_ORDER:-dir,branch,worktree_path}"
-line2=""
-IFS=',' read -ra ws_segments <<< "$ws_order"
-for seg in "${ws_segments[@]}"; do
-    case "$seg" in
-        dir)            [ -z "$line2" ] && line2="${BLUE}${ICON_DIR} ${dir_name}${RST}" || line2="${line2}${SEP}${BLUE}${ICON_DIR} ${dir_name}${RST}" ;;
-        branch)         line2="${line2}${git_info}" ;;
-        worktree_path)  line2="${line2}${worktree_path_str}" ;;
-    esac
-done
-line2="${line2}${node_str}${changes_str}${duration_str}${agent_str}${worktree_str}${vim_str}"
+line2="${BLUE}${ICON_DIR} ${dir_name}${RST}${git_info}${worktree_path_str}${node_str}${changes_str}${duration_str}${agent_str}${worktree_str}${vim_str}"
 
-# --- Line order (opt-in: STATUSLINE_LINE_ORDER=workspace-first) ---
-if [ "${STATUSLINE_LINE_ORDER:-}" = "workspace-first" ]; then
-    printf '%s\n%s' "$line2" "$line1"
-else
-    printf '%s\n%s' "$line1" "$line2"
-fi
+printf '%s\n%s' "$line1" "$line2"

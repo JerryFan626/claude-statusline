@@ -115,36 +115,6 @@ export STATUSLINE_ICON_MODEL="🤖"   # 只覆盖模型图标
 
 可用图标名称：`MODEL`、`CTX`、`DIR`、`GIT`、`COST`、`WARN`、`VIM`、`NODE`、`CLOCK`、`CODE`、`AGENT`、`TREE`。
 
-### 行顺序
-
-默认第一行显示 AI 状态，第二行显示工作区信息。可以交换两行：
-
-```bash
-export STATUSLINE_LINE_ORDER=workspace-first
-```
-
-当 Claude Code 的权限模式指示器遮挡底部行时，此选项很有用。
-
-### Worktree 根路径
-
-显示 git worktree 根路径：
-
-```bash
-export STATUSLINE_SHOW_WORKTREE_PATH=1
-```
-
-### 工作区段顺序
-
-自定义目录、分支和 worktree 路径段的显示顺序：
-
-```bash
-# 默认顺序
-export STATUSLINE_WORKSPACE_ORDER=dir,branch,worktree_path
-
-# Worktree 优先
-export STATUSLINE_WORKSPACE_ORDER=worktree_path,branch,dir
-```
-
 ### 修改脚本
 
 克隆仓库后直接编辑 `statusline-command.sh`，关键常量：
