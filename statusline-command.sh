@@ -114,6 +114,20 @@ else
     ICON_TREE="🌳"
 fi
 
+# --- Per-icon overrides (e.g. STATUSLINE_ICON_GIT=󰘬) ---
+[ -n "${STATUSLINE_ICON_MODEL:-}" ] && ICON_MODEL="$STATUSLINE_ICON_MODEL"
+[ -n "${STATUSLINE_ICON_CTX:-}" ]   && ICON_CTX="$STATUSLINE_ICON_CTX"
+[ -n "${STATUSLINE_ICON_DIR:-}" ]   && ICON_DIR="$STATUSLINE_ICON_DIR"
+[ -n "${STATUSLINE_ICON_GIT:-}" ]   && ICON_GIT="$STATUSLINE_ICON_GIT"
+[ -n "${STATUSLINE_ICON_COST:-}" ]  && ICON_COST="$STATUSLINE_ICON_COST"
+[ -n "${STATUSLINE_ICON_WARN:-}" ]  && ICON_WARN="$STATUSLINE_ICON_WARN"
+[ -n "${STATUSLINE_ICON_VIM:-}" ]   && ICON_VIM="$STATUSLINE_ICON_VIM"
+[ -n "${STATUSLINE_ICON_NODE:-}" ]  && ICON_NODE="$STATUSLINE_ICON_NODE"
+[ -n "${STATUSLINE_ICON_CLOCK:-}" ] && ICON_CLOCK="$STATUSLINE_ICON_CLOCK"
+[ -n "${STATUSLINE_ICON_CODE:-}" ]  && ICON_CODE="$STATUSLINE_ICON_CODE"
+[ -n "${STATUSLINE_ICON_AGENT:-}" ] && ICON_AGENT="$STATUSLINE_ICON_AGENT"
+[ -n "${STATUSLINE_ICON_TREE:-}" ]  && ICON_TREE="$STATUSLINE_ICON_TREE"
+
 SEP="${DIM} │ ${RST}"
 BAR_SEGMENTS=16
 
@@ -179,7 +193,9 @@ fi
 git_info=""
 if git -C "$cwd" rev-parse --git-dir > /dev/null 2>&1; then
     branch=$(git -C "$cwd" branch --show-current 2>/dev/null)
-    [ -z "$branch" ] && branch="detached"
+    if [ -z "$branch" ]; then
+        branch=$(git -C "$cwd" rev-parse --short HEAD 2>/dev/null || echo "detached")
+    fi
 
     staged=0 unstaged=0 untracked=0
     while IFS= read -r line; do
@@ -199,6 +215,16 @@ if git -C "$cwd" rev-parse --git-dir > /dev/null 2>&1; then
     [ "$untracked" -gt 0 ] && status="${status} ${DIM}?${untracked}${RST}"
 
     git_info="${SEP}${MAGENTA}${ICON_GIT} ${branch}${RST}${status}"
+fi
+
+# --- Git worktree root path (opt-in: STATUSLINE_SHOW_WORKTREE_PATH=1) ---
+worktree_path_str=""
+if [ "${STATUSLINE_SHOW_WORKTREE_PATH:-0}" = "1" ] && git -C "$cwd" rev-parse --git-dir > /dev/null 2>&1; then
+    wt_root=$(git -C "$cwd" rev-parse --show-toplevel 2>/dev/null)
+    if [ -n "$wt_root" ]; then
+        wt_display="${wt_root/#$HOME/~}"
+        worktree_path_str="${SEP}${DIM}${ICON_TREE} ${wt_display}${RST}"
+    fi
 fi
 
 # --- Node.js version detection ---
@@ -263,6 +289,22 @@ else
     line1="${CYAN}${BOLD}${ICON_MODEL} ${model}${RST}${SEP}${DIM}${ICON_CTX}${RST} ${CTX_COLOR}${bar} ${pct_int}%${RST}${line1_tail}"
 fi
 
-line2="${BLUE}${ICON_DIR} ${dir_name}${RST}${git_info}${node_str}${changes_str}${duration_str}${agent_str}${worktree_str}${vim_str}"
+# --- Workspace segment order (opt-in: STATUSLINE_WORKSPACE_ORDER=dir,branch,worktree_path) ---
+ws_order="${STATUSLINE_WORKSPACE_ORDER:-dir,branch,worktree_path}"
+line2=""
+IFS=',' read -ra ws_segments <<< "$ws_order"
+for seg in "${ws_segments[@]}"; do
+    case "$seg" in
+        dir)            [ -z "$line2" ] && line2="${BLUE}${ICON_DIR} ${dir_name}${RST}" || line2="${line2}${SEP}${BLUE}${ICON_DIR} ${dir_name}${RST}" ;;
+        branch)         line2="${line2}${git_info}" ;;
+        worktree_path)  line2="${line2}${worktree_path_str}" ;;
+    esac
+done
+line2="${line2}${node_str}${changes_str}${duration_str}${agent_str}${worktree_str}${vim_str}"
 
-printf '%s\n%s' "$line1" "$line2"
+# --- Line order (opt-in: STATUSLINE_LINE_ORDER=workspace-first) ---
+if [ "${STATUSLINE_LINE_ORDER:-}" = "workspace-first" ]; then
+    printf '%s\n%s' "$line2" "$line1"
+else
+    printf '%s\n%s' "$line1" "$line2"
+fi
