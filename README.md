@@ -66,6 +66,14 @@ chmod +x ~/.claude/statusline-command.sh
 
 3. Restart Claude Code.
 
+## Upgrade
+
+Re-run the install command to upgrade to the latest version:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/JerryFan626/claude-statusline/main/install.sh | bash
+```
+
 ## Uninstall
 
 ```bash
@@ -94,6 +102,47 @@ Auto-detects dark/light mode from macOS system settings. Override with:
 
 ```bash
 export STATUSLINE_THEME=dark   # or light, auto
+```
+
+### Icon Overrides
+
+Override any individual icon regardless of mode:
+
+```bash
+export STATUSLINE_ICON_GIT="󰘬"     # Override just the git icon
+export STATUSLINE_ICON_MODEL="🤖"   # Override just the model icon
+```
+
+Available icon names: `MODEL`, `CTX`, `DIR`, `GIT`, `COST`, `WARN`, `VIM`, `NODE`, `CLOCK`, `CODE`, `AGENT`, `TREE`.
+
+### Line Order
+
+By default, AI status is on line 1 and workspace info on line 2. Swap them with:
+
+```bash
+export STATUSLINE_LINE_ORDER=workspace-first
+```
+
+This is useful when Claude Code's permission-mode indicator overlaps the bottom row.
+
+### Worktree Root Path
+
+Show the git worktree root path as a segment:
+
+```bash
+export STATUSLINE_SHOW_WORKTREE_PATH=1
+```
+
+### Workspace Segment Order
+
+Customize the order of directory, branch, and worktree path segments:
+
+```bash
+# Default order
+export STATUSLINE_WORKSPACE_ORDER=dir,branch,worktree_path
+
+# Worktree-first order
+export STATUSLINE_WORKSPACE_ORDER=worktree_path,branch,dir
 ```
 
 ### Modifying the script
